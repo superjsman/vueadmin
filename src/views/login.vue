@@ -21,6 +21,7 @@
     </div>
 </template>
 <script>
+import {postInfo} from '../api'
 export default {
     data () {
         return {
@@ -41,8 +42,18 @@ export default {
      methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
+          if (valid) { console.log({username:this.userinfo.username ,password:this.userinfo.password})
+            postInfo('login',{username: this.userinfo.username ,password: this.userinfo.password})
+            .then(res =>{
+                if (res.meta.status===200){
+                    this.$router.push('/index')
+                } else {
+                      this.$message({
+                        message: res.meta.msg,
+                        type: 'error'
+                        });
+                }
+            })
           } else {
             console.log('error submit!!');
             return false;
