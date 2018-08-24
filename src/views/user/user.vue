@@ -11,8 +11,8 @@
         </el-row>
         <el-row>
             <el-col :span="24">
-                <el-input placeholder="请输入内容" v-model="input5" class="search-input">
-                    <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入内容" v-model="search" class="search-input" @keyup.native.enter="searchinfo()">
+                    <el-button slot="append" icon="el-icon-search" @click="searchinfo()"></el-button>
                 </el-input>
                 <el-button type="success" plain>添加用户</el-button>
             </el-col>
@@ -37,6 +37,15 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
+                    <el-switch
+                    v-model="value2"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                    </el-switch>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
                     <el-button
                     size="mini"
                     @click="handleEdit(scope.$index, scope.row)" icon="el-icon-edit" type="primary" plain></el-button>
@@ -56,10 +65,10 @@
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage4"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
+            :page-sizes="[1, 2, 3, 4]"
+            :page-size="pagesize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
+            :total="total">
             </el-pagination>
         </div>
     </div>
@@ -69,17 +78,27 @@ import {getInfo} from '@/api'
     export default {
         data () {
             return {
-                input5: '',            
+                search: '',            
                 userList: [],
-                currentPage4: 4
+                currentPage4: 1,
+                value2: true,
+                total: null,
+                pagenum: 1,
+                pagesize: 1,
+
+
             }
         },
         methods: {
             handleSizeChange(val) {
                 console.log(`每页 ${val} 条`);
+                this.pagesize = val
+                this.searchinfo()
             },
             handleCurrentChange(val) {
                 console.log(`当前页: ${val}`);
+                this.pagenum = val
+                this.searchinfo()
             },
              handleEdit(index, row) {
                 console.log(index, row);
@@ -89,17 +108,21 @@ import {getInfo} from '@/api'
             },
             handleCheck(index, row) {
                 console.log(index, row);
+            },
+            searchinfo(){ console.log(123)
+                getInfo('/users',{
+                    query: this.search,
+                    pagenum: this.pagenum,
+                    pagesize: this.pagesize
+                }).then(res => {
+                    console.log(res)
+                    this.userList = res.data.data.users,
+                    this.total = res.data.data.total
+                })
             }
             },
         mounted () {
-            getInfo('/users',{
-                query: '',
-                pagenum: 1,
-                pagesize: 10
-            }).then(res => {
-                console.log(res)
-                this.userList = res.data.data.users
-            })
+            this.searchinfo(this.search)
         }    
 
     }
