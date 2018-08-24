@@ -11,3 +11,6 @@ axios.interceptors.request.use(function (config) {
 export const postInfo = (url, data) => {
   return axios.post(url, data).then(res => res.data)
 }
+export const getInfo = (url, data) => {
+  return axios.get(url, {params: data})
+}
