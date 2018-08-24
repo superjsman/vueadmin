@@ -14,3 +14,9 @@ export const postInfo = (url, data) => {
 export const getInfo = (url, data) => {
   return axios.get(url, {params: data})
 }
+export const putInfo = (data) => {
+  return axios({
+    method: 'put',
+    url: 'users/' + data.uId + '/state/' + data.type
+  })
+}
