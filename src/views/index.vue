@@ -1,23 +1,25 @@
 <template>
     <div class="home">
         <el-container>
-            <el-aside width="200px">
+            <el-aside width="auto">
                 <div class="logo"></div>
  <el-menu
+      :collapse="isCollapse"
       default-active="2"
       class="el-menu-admin"
       @open="handleOpen"
       @close="handleClose"
       background-color="#545c64"
       text-color="#fff"
-      active-text-color="#ffd04b">
+      active-text-color="#ffd04b"
+      :style="{'border-right': 0}">
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>用户管理</span>
         </template>
         <el-menu-item-group>          
-          <el-menu-item index="1-1">
+          <el-menu-item index="2">
               <i class="el-icon-menu"></i>
               <span>用户列表</span>
           </el-menu-item>
@@ -26,8 +28,19 @@
          </el-menu>
             </el-aside>
             <el-container>
-                <el-header>Header</el-header>
-                <el-main>Main</el-main>
+                <el-header>
+                  <i class="myicon myicon-menu toggle-btn" @click="isCollapse=!isCollapse"></i>
+                  <div class="system-title">
+                    电商后台管理系统
+                  </div>
+                  <div>
+                    <span class="welcome">您好,xxx</span>
+                    <el-button type="text" @click="goOut">退出</el-button>
+                  </div>
+                </el-header>
+                <el-main>
+                  <router-view></router-view>
+                </el-main>
             </el-container>
         </el-container>
     </div>
@@ -40,6 +53,15 @@
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      goOut(){
+        localStorage.removeItem('mytoken')
+        this.$router.push('/login')
+      }
+    },
+    data: function(){
+      return {
+        isCollapse: false
       }
     }
   }
