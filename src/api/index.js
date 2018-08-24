@@ -3,7 +3,6 @@ axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
 axios.interceptors.request.use(function (config) {
   let mytoken = localStorage.getItem('mytoken')
   if (mytoken) {
-    console.log('应该加响应头')
     config.headers.Authorization = mytoken
   }
   return config
@@ -19,4 +18,23 @@ export const putInfo = (data) => {
     method: 'put',
     url: 'users/' + data.uId + '/state/' + data.type
   })
+}
+export const editUserInfo = (data) => {
+  return axios({
+    method: 'put',
+    url: 'users/' + data.id,
+    data
+  })
+}
+export const deleteUser = data => {
+  return axios({
+    method: 'delete',
+    url: 'users/' + data
+  })
+}
+export const assignList = () => {
+  return axios.get('roles')
+}
+export const userAssign = (data) => {
+  return axios.put(`users/${data.id}/role`, {rid: data.rid})
 }
