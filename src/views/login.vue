@@ -22,6 +22,7 @@
 </template>
 <script>
 import {postInfo} from '../api'
+import {mapMutations} from 'vuex'
 export default {
     data () {
         return {
@@ -48,7 +49,8 @@ export default {
                 if (res.meta.status===200){
                     console.log(res)
                     localStorage.setItem('mytoken', res.data.token)
-                    this.$router.push('/index')
+                    this.setName(res.data.username)
+                    this.$router.push('/')
                 } else {
                       this.$message({
                         message: res.meta.msg,
@@ -61,7 +63,8 @@ export default {
             return false;
           }
         });
-      }
+      },
+      ...mapMutations(['setName'])
     }
   }
 </script>

@@ -4,8 +4,8 @@
             <el-aside width="auto">
                 <div class="logo"></div>
  <el-menu
+      :router="true"
       :collapse="isCollapse"
-      default-active="2"
       class="el-menu-admin"
       @open="handleOpen"
       @close="handleClose"
@@ -19,7 +19,7 @@
           <span>用户管理</span>
         </template>
         <el-menu-item-group>          
-          <el-menu-item index="2">
+          <el-menu-item index="/user">
               <i class="el-icon-menu"></i>
               <span>用户列表</span>
           </el-menu-item>
@@ -34,7 +34,7 @@
                     电商后台管理系统
                   </div>
                   <div>
-                    <span class="welcome">您好,xxx</span>
+                    <span class="welcome">您好,{{name}}</span>
                     <el-button type="text" @click="goOut">退出</el-button>
                   </div>
                 </el-header>
@@ -46,6 +46,7 @@
     </div>
 </template>
 <script>
+import {mapState} from 'vuex'
   export default {
     methods: {
       handleOpen(key, keyPath) {
@@ -63,6 +64,9 @@
       return {
         isCollapse: false
       }
+    },
+    computed: {
+      ...mapState(['name'])
     }
   }
 </script>
