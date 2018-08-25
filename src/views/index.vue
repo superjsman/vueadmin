@@ -12,7 +12,9 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
-      :style="{'border-right': 0}">
+      :style="{'border-right': 0}"
+      unique-opened
+      :default-active="currentMenu">
       <el-submenu index="1">
         <template slot="title">
           <i class="el-icon-location"></i>
@@ -22,6 +24,24 @@
           <el-menu-item index="/user">
               <i class="el-icon-menu"></i>
               <span>用户列表</span>
+          </el-menu-item>
+        </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="2">
+        <template slot="title">
+          <i class="el-icon-location"></i>
+          <span>权限管理</span>
+        </template>
+        <el-menu-item-group>          
+          <el-menu-item index="/power">
+              <i class="el-icon-menu"></i>
+              <span>角色列表</span>
+          </el-menu-item>
+        </el-menu-item-group>
+        <el-menu-item-group>          
+          <el-menu-item index="/powerAssign">
+              <i class="el-icon-menu"></i>
+              <span>权限列表</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>
@@ -62,7 +82,8 @@ import {mapState} from 'vuex'
     },
     data: function(){
       return {
-        isCollapse: false
+        isCollapse: false,
+        currentMenu: ''
       }
     },
     computed: {

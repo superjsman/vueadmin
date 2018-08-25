@@ -4,6 +4,8 @@ import login from '@/views/login'
 import index from '@/views/index'
 import main from '@/views/main'
 import user from '@/views/user/user'
+import power from '@/views/power/power'
+import powerAssign from '@/views/power/powerAssign'
 Vue.use(Router)
 
 export default new Router({
@@ -23,6 +25,16 @@ export default new Router({
           path: 'user',
           name: 'user',
           component: user
+        },
+        {
+          path: 'power',
+          name: 'power',
+          component: power
+        },
+        {
+          path: 'powerAssign',
+          name: 'powerAssign',
+          component: powerAssign
         }
       ]
     },

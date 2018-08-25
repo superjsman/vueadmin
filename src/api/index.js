@@ -38,3 +38,6 @@ export const assignList = () => {
 export const userAssign = (data) => {
   return axios.put(`users/${data.id}/role`, {rid: data.rid})
 }
+export const getPowerList = () => {
+  return axios.get('rights/list')
+}
