@@ -3,9 +3,14 @@ import Router from 'vue-router'
 import login from '@/views/login'
 import index from '@/views/index'
 import main from '@/views/main'
-import user from '@/views/user/user'
-import power from '@/views/power/power'
-import powerAssign from '@/views/power/powerAssign'
+import users from '@/views/user/users'
+import roles from '@/views/power/roles'
+import rights from '@/views/power/rights'
+import goods from '@/views/goods/goods'
+import params from '@/views/goods/params'
+import categories from '@/views/goods/categories'
+import orders from '@/views/orders/orders'
+import reports from '@/views/reports/reports'
 Vue.use(Router)
 
 export default new Router({
@@ -22,19 +27,44 @@ export default new Router({
           component: main
         },
         {
-          path: 'user',
-          name: 'user',
-          component: user
+          path: 'users',
+          name: 'users',
+          component: users
         },
         {
-          path: 'power',
-          name: 'power',
-          component: power
+          path: 'roles',
+          name: 'roles',
+          component: roles
         },
         {
-          path: 'powerAssign',
-          name: 'powerAssign',
-          component: powerAssign
+          path: 'rights',
+          name: 'rights',
+          component: rights
+        },
+        {
+          path: 'goods',
+          name: 'goods',
+          component: goods
+        },
+        {
+          path: 'params',
+          name: 'params',
+          component: params
+        },
+        {
+          path: 'categories',
+          name: 'categories',
+          component: categories
+        },
+        {
+          path: 'orders',
+          name: 'orders',
+          component: orders
+        },
+        {
+          path: 'reports',
+          name: 'reports',
+          component: reports
         }
       ]
     },

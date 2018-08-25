@@ -50,3 +50,6 @@ export const deletePower = (data) => {
 export const authority = (data) => {
   return axios.post(`roles/${data.roleId}/rights`, {rids: data.rids}).then(res => res.data)
 }
+export const getMenus = () => { // 获取菜单栏权限
+  return axios.get('menus').then(res => res.data)
+}

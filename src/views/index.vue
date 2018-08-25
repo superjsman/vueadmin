@@ -15,36 +15,36 @@
       :style="{'border-right': 0}"
       unique-opened
       :default-active="currentMenu">
-      <el-submenu index="1">
+      <el-submenu :index="item.id" v-for="(item) in menuList" :key="item.id">
         <template slot="title">
           <i class="el-icon-location"></i>
-          <span>用户管理</span>
+          <span>{{item.authName}}</span>
         </template>
-        <el-menu-item-group>          
-          <el-menu-item index="/user">
+        <el-menu-item-group v-for="itemm in item.children" :key="itemm.id">          
+          <el-menu-item :index="itemm.path">
               <i class="el-icon-menu"></i>
-              <span>用户列表</span>
+              <span>{{itemm.authName}}</span>
           </el-menu-item>
         </el-menu-item-group>
-        </el-submenu>
-        <el-submenu index="2">
+      </el-submenu>
+      <!-- <el-submenu index="2">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>权限管理</span>
         </template>
         <el-menu-item-group>          
-          <el-menu-item index="/power">
+          <el-menu-item index="/roles">
               <i class="el-icon-menu"></i>
               <span>角色列表</span>
           </el-menu-item>
         </el-menu-item-group>
         <el-menu-item-group>          
-          <el-menu-item index="/powerAssign">
+          <el-menu-item index="/rights">
               <i class="el-icon-menu"></i>
               <span>权限列表</span>
           </el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
+      </el-submenu> -->
          </el-menu>
             </el-aside>
             <el-container>
@@ -67,6 +67,7 @@
 </template>
 <script>
 import {mapState} from 'vuex'
+import {getMenus} from '@/api'
   export default {
     methods: {
       handleOpen(key, keyPath) {
@@ -83,11 +84,18 @@ import {mapState} from 'vuex'
     data: function(){
       return {
         isCollapse: false,
-        currentMenu: ''
+        currentMenu: '',
+        menuList: []
       }
     },
     computed: {
       ...mapState(['name'])
+    },
+    created(){
+      getMenus().then(res => {
+        console.log(res)
+        this.menuList = res.data
+      })
     }
   }
 </script>

@@ -67,7 +67,7 @@
                     <el-button
                     size="mini"
                     type="warning"
-                    @click="handleCheck(scope.$index, scope.row)" icon="el-icon-check" plain></el-button>
+                    @click="handleCheck(scope.$index, scope.row)" icon="el-icon-check" plain title="授权角色"></el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -76,6 +76,7 @@
                 :data="treeData"
                 show-checkbox
                 default-expand-all
+                :default-checked-keys="selectArr"
                 node-key="id"
                 ref="tree"
                 highlight-current
@@ -101,7 +102,8 @@ import {assignList, deletePower, getPowerTree, authority} from '@/api'
                         children: 'children',
                         label: 'authName'
                         },
-                addPowerId: ''
+                addPowerId: '',
+                selectArr: []
             }
         },
         methods: {
@@ -112,9 +114,19 @@ import {assignList, deletePower, getPowerTree, authority} from '@/api'
                     console.log(index, row);
                 },
             handleCheck(index, row) { //点击添加权限, 发起数据tree请求并渲染到页面
-                    console.log(index, row.id)
+                    console.log(index, row)
                     this.assigVisible = true
                     this.addPowerId = row.id
+                    let arr = []
+                    row.children.forEach(element => {
+                        element.children.forEach(element => {
+                            element.children.forEach(element =>{
+                                arr.push(element.id)
+                            })
+                        })
+                    });
+                    this.selectArr = arr
+                    // this.selectArr = row.children.children.children
                     getPowerTree().then(res => {
                         console.log(res)
                         this.treeData = res.data
