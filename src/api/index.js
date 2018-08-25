@@ -53,3 +53,9 @@ export const authority = (data) => {
 export const getMenus = () => { // 获取菜单栏权限
   return axios.get('menus').then(res => res.data)
 }
+export const goodList = data => { //获取商品列表信息
+  return axios.get('goods',{params:{query:data.query ,pagenum:data.pagenum ,pagesize: data.pagesize}})
+  .then(res => res.data)
+}
+export const goodCat = (type) => axios.get('categories',{params:{type}})
+.then(res => res.data)

@@ -226,14 +226,12 @@ import {getInfo, putInfo, postInfo, editUserInfo, deleteUser, assignList, userAs
                     });
             },
             handleDelete(index, row) {
-                        console.log(index, row);
                 this.$confirm('确定要删除该用户吗?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                     }).then(() => {
                         deleteUser(row.id).then(res => {
-                            console.log(res)
                             if (res.data.meta.status === 200 ) {
                                  this.$message({
                                         type: 'success',

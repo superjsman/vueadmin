@@ -15,7 +15,7 @@
       :style="{'border-right': 0}"
       unique-opened
       :default-active="currentMenu">
-      <el-submenu :index="item.id" v-for="(item) in menuList" :key="item.id">
+      <el-submenu :index="item.path" v-for="(item) in menuList" :key="item.id">
         <template slot="title">
           <i class="el-icon-location"></i>
           <span>{{item.authName}}</span>
