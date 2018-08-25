@@ -17,17 +17,22 @@
             <el-table-column type="expand">
                 <template slot-scope="props">
                         <div>
+                            <el-row>
+                                <el-col :span="24" v-if="props.row.children.length === 0">
+                                    该角色没有分配权限,请前往分配!
+                                </el-col>
+                            </el-row>
                             <el-row v-for="(item, index) in props.row.children" :key="index" class="box">
                                 <el-col :span="3">
-                                    <el-tag closable type="">{{item.authName}}</el-tag><i class="el-icon-arrow-right"></i>
+                                    <el-tag closable type=""  @close="handleClose(item.id, props.row.id)">{{item.authName}}</el-tag><i class="el-icon-arrow-right"></i>
                                 </el-col>
                                 <el-col :span="21">
                                     <el-row v-for="(items,indexs) in item.children" :key="indexs" class="erhang">
                                         <el-col :span="4">
-                                            <el-tag closable type="success">{{items.authName}}</el-tag><i class="el-icon-arrow-right"></i>
+                                            <el-tag closable type="success" @close="handleClose(items.id, props.row.id)">{{items.authName}}</el-tag><i class="el-icon-arrow-right"></i>
                                         </el-col>
                                         <el-col :span="20">
-                                            <el-tag closable type="warning" v-for="(itemss,indexss) in items.children" :key="indexss">{{itemss.authName}}</el-tag>
+                                            <el-tag closable type="warning" v-for="(itemss,indexss) in items.children" :key="indexss" @close="handleClose(itemss.id, props.row.id)">{{itemss.authName}}</el-tag>
                                         </el-col>
                                     </el-row>
                                 </el-col>
@@ -66,14 +71,37 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-dialog title="角色授权" :visible.sync="assigVisible">
+                <el-tree
+                :data="treeData"
+                show-checkbox
+                default-expand-all
+                node-key="id"
+                ref="tree"
+                highlight-current
+                :props="defaultProps">
+                </el-tree>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="assigVisible = false">取 消</el-button>
+                <el-button type="primary" @click="assignpower">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
-import {assignList} from '@/api'
+import {assignList, deletePower, getPowerTree, authority} from '@/api'
     export default {
         data () {
             return {
-                powerList: [{path:'',authName:''}]
+                powerList: [{path:'',authName:''}],
+                assigVisible: false,                
+                formLabelWidth: '120px',
+                treeData: [],
+                defaultProps: {
+                        children: 'children',
+                        label: 'authName'
+                        },
+                addPowerId: ''
             }
         },
         methods: {
@@ -83,15 +111,55 @@ import {assignList} from '@/api'
             handleDelete(index, row) {
                     console.log(index, row);
                 },
-            handleCheck(index, row) {
-                    console.log(index, row);
+            handleCheck(index, row) { //点击添加权限, 发起数据tree请求并渲染到页面
+                    console.log(index, row.id)
+                    this.assigVisible = true
+                    this.addPowerId = row.id
+                    getPowerTree().then(res => {
+                        console.log(res)
+                        this.treeData = res.data
+                    })
+                },
+            handleClose(rightId, roleId) { //删除标签
+                    console.log(rightId,roleId)
+                    deletePower({rightId, roleId}).then(res => {
+                        console.log(res)
+                        if(res.meta.status === 200) {
+                            this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                            })
+                                assignList().then(res => {
+                                    
+                                    this.powerList = res.data.data
+                                })
+                        }
+                    })
+                    
+                },
+                assignpower(){ // 点击确认添加权限
+                    let arr = this.$refs.tree.getCheckedKeys()
+                    arr = arr.join(',')
+                    authority({roleId: this.addPowerId,rids: arr}).then(res => {
+                        console.log(res)
+                        if(res.meta.status === 200) {
+                            this.$message({
+                                message: '操作成功',
+                                type: 'success'
+                            })
+                            this.assigVisible = false
+                             assignList().then(res => {
+                                this.powerList = res.data.data
+                            })
+                        }
+                    })
                 }
         },
         created () {
             assignList().then(res => {
-                console.log(res)
                 this.powerList = res.data.data
             })
+            
         }
     }
 </script>

@@ -41,3 +41,12 @@ export const userAssign = (data) => {
 export const getPowerList = () => {
   return axios.get('rights/list')
 }
+export const getPowerTree = () => {
+  return axios.get('rights/tree').then(res => res.data)
+}
+export const deletePower = (data) => {
+  return axios.delete(`roles/${data.roleId}/rights/${data.rightId}`).then(res => res.data)
+}
+export const authority = (data) => {
+  return axios.post(`roles/${data.roleId}/rights`, {rids: data.rids}).then(res => res.data)
+}
